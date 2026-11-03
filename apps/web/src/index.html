@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude Brain</title>
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<canvas id="uni" role="img" aria-label="Het heelal van Claude Brain. Met de knop Lijst krijg je dezelfde inhoud als tekstlijst."></canvas>
+<header class="top">
+  <div class="brand glass"><span class="dot"></span>Claude Brain</div>
+  <form class="search glass" id="searchform" role="search">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9aa0c3" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+    <input id="q" autocomplete="off" spellcheck="false" aria-label="Zoeken" placeholder="Zoek zoals Claude: intake tag:proces -oud">
+    <div id="results" class="results glass" hidden></div>
+  </form>
+  <nav class="nav glass" aria-label="Hoofdmenu"><a href="#" id="nav-heelal">Heelal</a><a href="#p=dashboard" id="nav-dashboard">Dashboard</a><a href="#p=logs" id="nav-logs">Logs</a><span class="live" id="live" title="Live verbinding met de server"></span></nav>
+  <button class="chip" id="listbtn" type="button" aria-pressed="false">Lijst</button>
+  <button class="chip" id="minall" type="button" aria-pressed="false">Menu's minimaliseren</button>
+</header>
+<main class="page" id="page" hidden></main>
+<nav class="crumbs glass" id="crumbs" aria-label="Pad"></nav>
+<div id="panels"></div>
+<aside class="side glass" id="side" aria-label="Details" hidden></aside>
+<div class="zoom glass" id="zoomhint"></div>
+<section class="list glass" id="list" aria-label="Lijstweergave" hidden></section>
+<div class="toast glass" id="toast" role="status" hidden></div>
+<script src="/assets/app.js"></script>
+</body>
+</html>

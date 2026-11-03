@@ -1,0 +1,14 @@
+{
+  "name": "brain",
+  "version": "0.5.0",
+  "description": "Koppelt Claude aan je lokale Claude Brain: skills om zuinig te zoeken, te onthouden en te organiseren.",
+  "license": "MIT",
+  "keywords": [
+    "memory",
+    "notes",
+    "mcp"
+  ],
+  "author": {
+    "name": "claude-brain"
+  }
+}

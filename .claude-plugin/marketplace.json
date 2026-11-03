@@ -1,0 +1,17 @@
+{
+  "name": "claude-brain",
+  "owner": {
+    "name": "claude-brain"
+  },
+  "plugins": [
+    {
+      "name": "brain",
+      "source": "./plugin",
+      "description": "Claude Brain: zuinig zoeken, onthouden en organiseren in je eigen lokale brein.",
+      "author": {
+        "name": "claude-brain"
+      }
+    }
+  ],
+  "description": "Plugins voor Claude Brain"
+}

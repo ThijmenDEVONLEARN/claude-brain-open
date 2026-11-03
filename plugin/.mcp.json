@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "claude-brain": {
+      "command": "brain",
+      "args": ["mcp-stdio"]
+    }
+  }
+}

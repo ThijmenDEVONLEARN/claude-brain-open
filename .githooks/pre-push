@@ -1,0 +1,3 @@
+#!/bin/sh
+# Geen GitHub Actions: de checks draaien lokaal voor elke push.
+exec pnpm check
