@@ -4,7 +4,7 @@ import { parseArgs } from "node:util";
 import { DatabaseSync } from "node:sqlite";
 import { fileURLToPath } from "node:url";
 import { rebuild, Writer } from "@claude-brain/core";
-import { autostartStatus, installAutostart, openUrl, uninstallAutostart } from "./autostart";
+import { autostartStatus, installAutostart, openUrl, stopServer, uninstallAutostart } from "./autostart";
 import { diagnose, fileMb } from "./doctor";
 import { loadConfig } from "./config";
 import { callTool } from "./client";
@@ -97,8 +97,16 @@ if (positionals[0] === "rebuild") {
   }
 } else if (positionals[0] === "uninstall-autostart") {
   try {
-    uninstallAutostart(root);
-    console.log("taak verwijderd; de server draait niet meer na de volgende aanmelding");
+    await uninstallAutostart(root);
+    console.log("taak verwijderd en server gestopt; hij start niet meer bij aanmelden");
+  } catch (e) {
+    console.error(`mislukt: ${(e as Error).message}`);
+    process.exit(1);
+  }
+} else if (positionals[0] === "stop") {
+  try {
+    const pid = await stopServer(root);
+    console.log(pid ? `server gestopt (pid ${pid}); start weer met: schtasks /Run /TN ClaudeBrain` : "er draait geen server");
   } catch (e) {
     console.error(`mislukt: ${(e as Error).message}`);
     process.exit(1);
@@ -110,6 +118,6 @@ if (positionals[0] === "rebuild") {
 } else if (positionals[0] === "token") {
   console.log(loadConfig(root).token);
 } else {
-  console.error("gebruik: brain serve | mcp-stdio | map [diepte] | call <tool> [json] | token | doctor [--fix] | open | install-autostart | uninstall-autostart | rebuild [--vault <map>] [--db <bestand>]");
+  console.error("gebruik: brain serve | mcp-stdio | map [diepte] | call <tool> [json] | token | doctor [--fix] | open | stop | install-autostart | uninstall-autostart | rebuild [--vault <map>] [--db <bestand>]");
   process.exit(2);
 }

@@ -92,6 +92,7 @@ describe("autostart", () => {
     expect(v).toContain("Do");
     expect(v).toContain("If rc = 0 Or rc = 3 Then Exit Do");
     expect(v).toContain("wacht = wacht * 2");
+    expect(v).toContain("If wacht > 60 Then wacht = 60"); // nooit langer dan 1 minuut
     expect(v).toContain("WScript.Sleep wacht * 1000");
     expect(v).toMatch(/Loop\r\nWScript\.Quit rc/);
   });

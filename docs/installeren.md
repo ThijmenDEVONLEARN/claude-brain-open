@@ -33,7 +33,7 @@ brain open                  # opent http://127.0.0.1:4747/ in je browser
 brain uninstall-autostart   # haalt de taak weer weg
 ```
 
-De taak start bij het aanmelden van jouw account, zonder venster en zonder adminrechten, en start de server zelf opnieuw als hij onverwacht stopt (na 5 seconden; bij herhaald stoppen steeds iets langer, tot 1 minuut). Stoppen doe je met `schtasks /End /TN ClaudeBrain` of `brain uninstall-autostart`; een losse `Stop-Process` op de server zorgt er dus voor dat hij zichzelf weer start. Uitvoer komt in `%USERPROFILE%\ClaudeBrain\logs\server.log`. De taak wijst naar de plek waar je de repo hebt staan: verplaats je de map, draai dan `brain install-autostart` opnieuw.
+De taak start bij het aanmelden van jouw account, zonder venster en zonder adminrechten, en start de server zelf opnieuw als hij onverwacht stopt (na 5 seconden; bij herhaald stoppen steeds iets langer, tot 1 minuut). Stoppen doe je met `brain stop` (stopt startscript en server) of `brain uninstall-autostart`; een losse `Stop-Process` op de server zorgt er dus voor dat hij zichzelf weer start, en `schtasks /End` sluit alleen het startscript af en laat de server draaien. Uitvoer komt in `%USERPROFILE%\ClaudeBrain\logs\server.log`. De taak wijst naar de plek waar je de repo hebt staan: verplaats je de map, draai dan `brain install-autostart` opnieuw.
 
 `brain doctor` past nooit een bestand van jou aan. Hij meldt kapotte bestanden, links en parents die nergens heen wijzen, afbeeldingen zonder sidecar of zonder bestand, en een index die achterliep. Draait de server niet, dan werkt hij de index bij en maakt `brain doctor --fix` een sidecar bij losse plaatjes; draait de server wel, dan kijkt hij alleen.
 

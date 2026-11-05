@@ -9,12 +9,12 @@ cd <map met de repo>
 git pull
 pnpm install
 pnpm build:web                    # bouwt de UI opnieuw (apps/web/dist)
-schtasks /End /TN ClaudeBrain     # stop de draaiende server
+brain stop                        # stopt het startscript én de server zelf
 brain install-autostart           # schrijft de nieuwe start.vbs en start de server met de nieuwe code
 brain doctor
 ```
 
-Gaat stoppen niet: `Stop-Process -Id <pid uit brain doctor> -Force`. De autostart-taak start de server dan zelf binnen 5 seconden opnieuw, met de nieuwe code. Ververs de pagina met Ctrl+F5.
+Gaat stoppen niet: `Stop-Process -Id <pid uit brain doctor> -Force`. Het startscript start de server dan zelf binnen 5 seconden opnieuw, met de nieuwe code. Ververs de pagina met Ctrl+F5.
 
 ## `brain`
 
@@ -24,7 +24,8 @@ Gaat stoppen niet: `Stop-Process -Id <pid uit brain doctor> -Force`. De autostar
 | `brain open` | opent het heelal in je browser (`http://127.0.0.1:4747/`) |
 | `brain doctor` | server, autostart, kluis en index controleren (`--fix` herstelt wat veilig kan) |
 | `brain install-autostart` | taak "ClaudeBrain" in de Taakplanner, start bij aanmelden |
-| `brain uninstall-autostart` | haalt die taak weer weg |
+| `brain stop` | stopt de server (en het startscript, zodat hij niet terugkomt); opnieuw starten: `schtasks /Run /TN ClaudeBrain` |
+| `brain uninstall-autostart` | stopt de server en haalt die taak weer weg |
 | `brain token` | toont je token |
 | `brain rebuild` | bouwt de index opnieuw uit de kluis (server moet uit staan; `--vault`, `--db`) |
 | `brain map [diepte]` | de kaart van het brein, zoals Claude hem ziet |

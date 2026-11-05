@@ -1,6 +1,7 @@
 import { execFileSync, spawn } from "node:child_process";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { lockHolder } from "./lock";
 
 export const TASK = "ClaudeBrain";
 
@@ -28,8 +29,9 @@ export function startVbs(node: string, script: string, logFile: string, root: st
     `  If rc = 0 Or rc = 3 Then Exit Do`,
     `  If Timer - t > 120 Or Timer < t Then`,
     `    wacht = 5`,
-    `  ElseIf wacht < 60 Then`,
+    `  Else`,
     `    wacht = wacht * 2`,
+    `    If wacht > 60 Then wacht = 60`,
     `  End If`,
     `  WScript.Sleep wacht * 1000`,
     `Loop`,
@@ -76,13 +78,31 @@ export function installAutostart(root: string, node: string, script: string, use
   if (startNow) schtasks("/Run", "/TN", TASK);
 }
 
-export function uninstallAutostart(root: string) {
-  windowsOnly();
-  try {
-    schtasks("/End", "/TN", TASK);
-  } catch {
-    /* draaide niet */
+/**
+ * Stopt de server echt: eerst de taak (het startscript, anders start dat de server meteen weer), dan het proces uit server.lock.
+ * `schtasks /End` alleen is niet genoeg: dat sluit het startscript af maar laat de node-server draaien.
+ * Geeft de pid die gestopt is, of undefined als er niets draaide.
+ */
+export async function stopServer(root: string): Promise<number | undefined> {
+  if (process.platform === "win32") {
+    try {
+      schtasks("/End", "/TN", TASK);
+    } catch {
+      /* taak bestaat niet of draaide niet */
+    }
   }
+  const lock = join(root, "data", "server.lock");
+  const pid = lockHolder(lock);
+  if (!pid) return undefined;
+  process.kill(pid);
+  for (let i = 0; i < 100 && lockHolder(lock) === pid; i++) await new Promise((r) => setTimeout(r, 100));
+  if (lockHolder(lock) === pid) throw new Error(`server (pid ${pid}) stopt niet; sluit hem met Taakbeheer`);
+  return pid;
+}
+
+export async function uninstallAutostart(root: string) {
+  windowsOnly();
+  await stopServer(root);
   schtasks("/Delete", "/TN", TASK, "/F");
   rmSync(join(root, "autostart"), { recursive: true, force: true });
 }
